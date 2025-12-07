@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>High-Ticket Sales Script Assistant</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
             --bg-dark: #0a0e17;
             --bg-card: #151b2b;
@@ -24,7 +25,7 @@
             --error: #ff4444;
             --warning: #ffaa00;
         }
-        
+
         body {
             font-family: 'Space Mono', monospace;
             background: var(--bg-dark);
@@ -32,7 +33,7 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -42,7 +43,7 @@
             gap: 20px;
             min-height: 100vh;
         }
-        
+
         /* Sidebar */
         .sidebar {
             background: var(--bg-card);
@@ -54,7 +55,7 @@
             position: sticky;
             top: 20px;
         }
-        
+
         .logo {
             font-size: 18px;
             font-weight: 700;
@@ -63,11 +64,11 @@
             text-transform: uppercase;
             letter-spacing: 2px;
         }
-        
+
         .input-group {
             margin-bottom: 18px;
         }
-        
+
         .input-group label {
             display: block;
             font-size: 11px;
@@ -76,7 +77,7 @@
             color: var(--text-dim);
             margin-bottom: 8px;
         }
-        
+
         .input-group input,
         .input-group textarea {
             width: 100%;
@@ -89,25 +90,25 @@
             font-size: 13px;
             transition: all 0.2s;
         }
-        
+
         .input-group textarea {
             min-height: 80px;
             resize: vertical;
         }
-        
+
         .input-group input:focus,
         .input-group textarea:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
         }
-        
+
         .phase-nav {
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
         }
-        
+
         .phase-btn {
             width: 100%;
             padding: 12px 16px;
@@ -125,19 +126,19 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .phase-btn:hover {
             border-color: var(--accent);
             color: var(--accent);
         }
-        
+
         .phase-btn.active {
             background: var(--accent);
             color: var(--bg-dark);
             border-color: var(--accent);
             font-weight: 700;
         }
-        
+
         .phase-number {
             display: inline-block;
             width: 24px;
@@ -150,12 +151,12 @@
             font-size: 11px;
             font-weight: 700;
         }
-        
+
         .phase-btn.active .phase-number {
             background: var(--bg-dark);
             color: var(--accent);
         }
-        
+
         /* Main Content */
         .main-content {
             background: var(--bg-card);
@@ -164,33 +165,34 @@
             border: 2px solid var(--border);
             min-height: 600px;
         }
-        
+
         .phase-section {
             display: none;
             animation: fadeIn 0.3s ease-in;
         }
-        
+
         .phase-section.active {
             display: block;
         }
-        
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
+
         .phase-header {
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 2px solid var(--border);
         }
-        
+
         .phase-title {
             font-size: 28px;
             font-weight: 700;
@@ -199,13 +201,13 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .phase-subtitle {
             font-size: 14px;
             color: var(--text-dim);
             font-weight: 400;
         }
-        
+
         .script-block {
             background: var(--bg-dark);
             border-left: 4px solid var(--accent);
@@ -217,7 +219,7 @@
             line-height: 1.8;
             position: relative;
         }
-        
+
         .script-block::before {
             content: '💬 SAY THIS';
             position: absolute;
@@ -231,7 +233,7 @@
             letter-spacing: 1px;
             font-weight: 700;
         }
-        
+
         .variable {
             color: var(--accent);
             font-weight: 700;
@@ -239,11 +241,11 @@
             padding: 2px 6px;
             border-radius: 3px;
         }
-        
+
         .question-list {
             margin: 25px 0;
         }
-        
+
         .question-item {
             background: var(--bg-dark);
             padding: 16px 20px;
@@ -254,20 +256,20 @@
             transition: all 0.2s;
             position: relative;
         }
-        
+
         .question-item:hover {
             border-left-width: 5px;
             transform: translateX(5px);
             background: #1a1f2e;
         }
-        
+
         .question-item::before {
             content: '▸';
             color: var(--accent);
             font-weight: 700;
             margin-right: 10px;
         }
-        
+
         .tip-box {
             background: rgba(255, 170, 0, 0.1);
             border: 1px solid var(--warning);
@@ -276,13 +278,13 @@
             margin: 20px 0;
             font-size: 13px;
         }
-        
+
         .tip-box::before {
             content: '💡 TIP: ';
             color: var(--warning);
             font-weight: 700;
         }
-        
+
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -290,7 +292,7 @@
             padding-top: 25px;
             border-top: 1px solid var(--border);
         }
-        
+
         .btn {
             padding: 14px 28px;
             border-radius: 8px;
@@ -303,36 +305,36 @@
             letter-spacing: 1px;
             border: none;
         }
-        
+
         .btn-primary {
             background: var(--accent);
             color: var(--bg-dark);
         }
-        
+
         .btn-primary:hover {
             background: var(--accent-dim);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 255, 136, 0.3);
         }
-        
+
         .btn-secondary {
             background: transparent;
             color: var(--text);
             border: 1px solid var(--border);
         }
-        
+
         .btn-secondary:hover {
             border-color: var(--accent);
             color: var(--accent);
         }
-        
+
         .objection-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 15px;
             margin: 25px 0;
         }
-        
+
         .objection-card {
             background: var(--bg-dark);
             padding: 20px;
@@ -341,25 +343,25 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        
+
         .objection-card:hover {
             border-color: var(--accent);
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0, 255, 136, 0.15);
         }
-        
+
         .objection-title {
             font-weight: 700;
             color: var(--accent);
             margin-bottom: 8px;
             font-size: 14px;
         }
-        
+
         .objection-preview {
             font-size: 12px;
             color: var(--text-dim);
         }
-        
+
         .modal {
             display: none;
             position: fixed;
@@ -372,11 +374,11 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .modal.active {
             display: flex;
         }
-        
+
         .modal-content {
             background: var(--bg-card);
             border: 2px solid var(--accent);
@@ -387,7 +389,7 @@
             overflow-y: auto;
             position: relative;
         }
-        
+
         .modal-close {
             position: absolute;
             top: 20px;
@@ -405,23 +407,23 @@
             border-radius: 6px;
             transition: all 0.2s;
         }
-        
+
         .modal-close:hover {
             background: var(--error);
             color: white;
         }
-        
+
         .checklist {
             list-style: none;
             margin: 20px 0;
         }
-        
+
         .checklist li {
             padding: 10px 0;
             padding-left: 30px;
             position: relative;
         }
-        
+
         .checklist li::before {
             content: '✓';
             position: absolute;
@@ -429,7 +431,7 @@
             color: var(--accent);
             font-weight: 700;
         }
-        
+
         .warning-box {
             background: rgba(255, 68, 68, 0.1);
             border: 1px solid var(--error);
@@ -438,7 +440,7 @@
             margin: 20px 0;
             font-size: 13px;
         }
-        
+
         .warning-box::before {
             content: '⚠️ WARNING: ';
             color: var(--error);
@@ -491,7 +493,7 @@
             .container {
                 grid-template-columns: 1fr;
             }
-            
+
             .sidebar {
                 position: relative;
                 top: 0;
@@ -513,37 +515,38 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">⚡ SALES ASSISTANT</div>
-            
+
             <div class="input-group">
                 <label>Prospect Name</label>
                 <input type="text" id="prospectName" placeholder="e.g., Sidharth">
             </div>
-            
+
             <div class="input-group">
                 <label>Business Type</label>
                 <input type="text" id="businessType" placeholder="e.g., Doctor / Clinic">
             </div>
-            
+
             <div class="input-group">
                 <label>Main Goal</label>
                 <input type="text" id="mainGoal" placeholder="e.g., Increase leads">
             </div>
-            
+
             <div class="input-group">
                 <label>Pain Point #1</label>
                 <textarea id="painPoint1" placeholder="What's their biggest challenge?"></textarea>
             </div>
-            
+
             <div class="input-group">
                 <label>Cost of Inaction</label>
                 <textarea id="costOfInaction" placeholder="What are they losing by not fixing this?"></textarea>
             </div>
-            
+
             <div class="input-group">
                 <label>Desired Outcome</label>
                 <textarea id="desiredOutcome" placeholder="What do they want to achieve?"></textarea>
@@ -553,7 +556,13 @@
                 <label>Budget Mentioned</label>
                 <input type="text" id="budgetMentioned" placeholder="e.g., 25K">
             </div>
-            
+
+            <div class="input-group">
+                <label>Previous Attempts / What Didn't Work</label>
+                <textarea id="previousAttempts"
+                    placeholder="What have they tried before? Why didn't it work?"></textarea>
+            </div>
+
             <div class="phase-nav">
                 <button class="phase-btn active" onclick="goToPhase(1)">
                     <span class="phase-number">1</span>
@@ -585,7 +594,7 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Main Content -->
         <div class="main-content">
             <!-- Phase 1: Opening -->
@@ -594,159 +603,188 @@
                     <div class="phase-title">Phase 1: Opening</div>
                     <div class="phase-subtitle">Take control and set the frame (2 minutes)</div>
                 </div>
-                
+
                 <div class="script-block">
-"Hey <span class="variable" id="name1">[Name]</span>, great to connect! How's your day going?"
+                    "Hey <span class="variable" id="name1">[Name]</span>, great to connect! How's your day going?"
                 </div>
-                
+
                 <div class="tip-box">
-Wait for their response. Be warm but brief. Mirror their energy level.
+                    Wait for their response. Be warm but brief. Mirror their energy level.
                 </div>
-                
+
                 <div class="script-block">
-"Perfect. Before we dive in, let me set some quick expectations. I've got about 20-25 minutes blocked for us.
+                    "Perfect. Before we dive in, let me set some quick expectations. I've got about 20-25 minutes
+                    blocked for us.
 
-The goal isn't to give you a sales pitch — the goal is to figure out if we're even a good fit to work together.
+                    The goal isn't to give you a sales pitch — the goal is to figure out if we're even a good fit to
+                    work together.
 
-I'm going to ask you some direct questions about your business, what's working, what's not, and where you want to go.
+                    I'm going to ask you some direct questions about your business, what's working, what's not, and
+                    where you want to go.
 
-By the end, we'll both know clearly whether this makes sense or not. Sound good?"
+                    By the end, we'll both know clearly whether this makes sense or not. Sound good?"
                 </div>
-                
+
                 <div class="tip-box">
-Wait for agreement. This establishes YOU control the process, not them. If they say "yes", you've set the frame.
+                    Wait for agreement. This establishes YOU control the process, not them. If they say "yes", you've
+                    set the frame.
                 </div>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-primary" onclick="goToPhase(2)">Start Discovery →</button>
                 </div>
             </div>
-            
+
             <!-- Phase 2: Discovery -->
             <div class="phase-section" id="phase2">
                 <div class="phase-header">
                     <div class="phase-title">Phase 2: Discovery</div>
                     <div class="phase-subtitle">Go deep - find REAL pain and urgency (8-12 minutes)</div>
                 </div>
-                
+
                 <div class="warning-box">
-Your goal: Ask 8-12 questions. Go 3-4 layers deep. Use SPIN: Situation → Problem → Implication → Need-Payoff
+                    Your goal: Ask 8-12 questions. Go 3-4 layers deep. Use SPIN: Situation → Problem → Implication →
+                    Need-Payoff
                 </div>
-                
-                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">SITUATION QUESTIONS (Current State)</h3>
-                
+
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">SITUATION QUESTIONS (Current
+                    State)</h3>
+
                 <div class="question-list">
                     <div class="question-item" onclick="copyToClipboard(this)">
-"<span class="variable" id="name2">[Name]</span>, what triggered you to book this call right now? What's changed?"
+                        "<span class="variable" id="name2">[Name]</span>, what triggered you to book this call right
+                        now? What's changed?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"Walk me through your current situation with your website. What does it do well? What frustrates you?"
+                        "Walk me through your current situation with your website. What does it do well? What frustrates
+                        you?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"Where do most of your clients come from today?"
+                        "Where do most of your clients come from today?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"What's your current process for getting appointments booked?"
+                        "What's your current process for getting appointments booked?"
                     </div>
                 </div>
-                
-                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">PROBLEM QUESTIONS (Uncover Pain)</h3>
-                
+
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">PROBLEM QUESTIONS (Uncover
+                    Pain)</h3>
+
                 <div class="question-list">
                     <div class="question-item" onclick="copyToClipboard(this)">
-"What's the #1 thing holding you back from growing faster right now?"
+                        "What's the #1 thing holding you back from growing faster right now?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"If I'm being honest — and you can be honest with me — how many leads or appointments do you think you're losing each month because of your website?"
+                        "If I'm being honest — and you can be honest with me — how many leads or appointments do you
+                        think you're losing each month because of your website?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"What's the real cost of that? Not just money — I mean time, stress, reputation, momentum?"
+                        "What's the real cost of that? Not just money — I mean time, stress, reputation, momentum?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"Have you tried to fix this before? What happened?"
+                        "Walk me through what you've tried before to fix this issue. What did you do, and why didn't it
+                        work?"
+                    </div>
+
+                    <div class="question-item" onclick="copyToClipboard(this)">
+                        "What specifically didn't work with those previous solutions? Was it the cost, the results, the
+                        process, or something else?"
                     </div>
                 </div>
-                
-                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">IMPLICATION QUESTIONS (Amplify Pain)</h3>
-                
+
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">IMPLICATION QUESTIONS (Amplify
+                    Pain)</h3>
+
                 <div class="question-list">
                     <div class="question-item" onclick="copyToClipboard(this)">
-"So if nothing changes in the next 30 days, what does that mean for your business? Your revenue? Your growth?"
+                        "So if nothing changes in the next 30 days, what does that mean for your business? Your revenue?
+                        Your growth?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"And if this continues for 3 months, 6 months... what's the real damage there?"
+                        "And if this continues for 3 months, 6 months... what's the real damage there?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"How is this affecting you personally? Are you losing sleep over it?"
+                        "How is this affecting you personally? Are you losing sleep over it?"
                     </div>
                 </div>
-                
-                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">NEED-PAYOFF QUESTIONS (Get Them to Sell Themselves)</h3>
-                
+
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">NEED-PAYOFF QUESTIONS (Get
+                    Them to Sell Themselves)</h3>
+
                 <div class="question-list">
                     <div class="question-item" onclick="copyToClipboard(this)">
-"If you had a website that automatically converted visitors into booked appointments — without you touching it — what would that be worth to your business?"
+                        "If you had a website that automatically converted visitors into booked appointments — without
+                        you touching it — what would that be worth to your business?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"What would change for you if this was solved 2 weeks from today?"
+                        "What would change for you if this was solved 2 weeks from today?"
                     </div>
-                    
+
                     <div class="question-item" onclick="copyToClipboard(this)">
-"On a scale of 1-10, how important is fixing this right now?"
+                        "On a scale of 1-10, how important is fixing this right now?"
                     </div>
                 </div>
-                
+
                 <div class="tip-box">
-After each answer, stay silent for 2-3 seconds. Let them elaborate. The deeper they go, the easier the close.
+                    After each answer, stay silent for 2-3 seconds. Let them elaborate. The deeper they go, the easier
+                    the close.
                 </div>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-secondary" onclick="goToPhase(1)">← Back</button>
                     <button class="btn btn-primary" onclick="goToPhase(3)">Present Solution →</button>
                 </div>
             </div>
-            
+
             <!-- Phase 3: Value Stack -->
             <div class="phase-section" id="phase3">
                 <div class="phase-header">
                     <div class="phase-title">Phase 3: Value Stack</div>
                     <div class="phase-subtitle">Position as trusted advisor (4-6 minutes)</div>
                 </div>
-                
+
                 <div class="script-block">
-"Okay, so based on everything you just told me, let me share what I recommend."
+                    "Okay, so based on everything you just told me, let me share what I recommend."
                 </div>
-                
+
                 <div class="script-block">
-"Here's what I'm seeing:
+                    "So here's what I'm seeing:
 
-1. <span class="variable" id="pain3">[Their main pain point]</span>
-2. <span class="variable" id="cost3">[The cost of inaction]</span>
-3. <span class="variable" id="goal3">[Their desired outcome]</span>
+                    The main issue is <span class="variable" id="pain3">[Their main pain point]</span>, which is costing
+                    you <span class="variable" id="cost3">[The cost of inaction]</span> every month.
 
-The gap between where you are and where you want to be comes down to three things your website is missing:
+                    What you actually want is <span class="variable" id="goal3">[Their desired outcome]</span>.
 
-❌ Number 1: Conversion structure — Your site isn't built to guide visitors to book
-❌ Number 2: Automation systems — No WhatsApp, email, CRM integration to capture leads
-❌ Number 3: Premium positioning — If you're a premium service, your site needs to look premium
+                    And you mentioned you've already tried <span class="variable" id="previous3">[previous
+                        attempts]</span> — but that didn't deliver.
 
-Does that sound accurate?"
+                    Let me show you why that didn't work, and what needs to happen instead:
+
+                    The gap between where you are and where you want to be comes down to three things your website is
+                    missing:
+
+                    ❌ Number 1: Conversion structure — Your site isn't built to guide visitors to book
+                    ❌ Number 2: Automation systems — No WhatsApp, email, CRM integration to capture leads
+                    ❌ Number 3: Premium positioning — If you're a premium service, your site needs to look premium
+
+                    Does that sound accurate?"
                 </div>
-                
+
                 <div class="tip-box">
-Get agreement before moving forward. If they say "yes," you've diagnosed correctly.
+                    Get agreement before moving forward. If they say "yes," you've diagnosed correctly.
                 </div>
 
-                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">SELECT PACKAGE TO RECOMMEND</h3>
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">SELECT PACKAGE TO RECOMMEND
+                </h3>
 
                 <div class="package-selector">
                     <div class="package-card" onclick="selectPackage('enterprise')">
@@ -762,225 +800,248 @@ Get agreement before moving forward. If they say "yes," you've diagnosed correct
                         <div class="package-price">₹14,999</div>
                     </div>
                 </div>
-                
+
                 <div id="enterpriseScript" style="display: none;">
                     <div class="script-block">
-"So here's what I'd recommend for someone in your position who wants <span class="variable" id="goal4">[their goal]</span>...
+                        "So here's what I'd recommend for someone in your position who wants <span class="variable"
+                            id="goal4">[their goal]</span>...
 
-The **Enterprise Package** is the best fit because it gives you:
+                        The **Enterprise Package** is the best fit because it gives you:
 
-✓ A conversion-optimized website that looks world-class
-✓ Full automation — WhatsApp, email, appointment booking, Google Sheets
-✓ 97+ SEO score guaranteed
-✓ LLM optimization so you show up in AI search
-✓ Google Analytics & Google My Business setup
-✓ 4 rounds of revisions so we nail it
-✓ 30 days premium support after launch
+                        ✓ A conversion-optimized website that looks world-class
+                        ✓ Full automation — WhatsApp, email, appointment booking, Google Sheets
+                        ✓ 97+ SEO score guaranteed
+                        ✓ LLM optimization so you show up in AI search
+                        ✓ Google Analytics & Google My Business setup
+                        ✓ 4 rounds of revisions so we nail it
+                        ✓ 30 days premium support after launch
 
-And the kicker? We deliver this in 14 days.
+                        And the kicker? We deliver this in 14 days.
 
-Most people we work with see <span class="variable" id="result4">[specific result]</span> within the first 30-60 days.
+                        Most people we work with see <span class="variable" id="result4">[specific result]</span> within
+                        the first 30-60 days.
 
-The reason I'm recommending this package over the others is because <span class="variable" id="reason4">[tie it to their pain/goal]</span>.
+                        The reason I'm recommending this package over the others is because <span class="variable"
+                            id="reason4">[tie it to their pain/goal]</span>.
 
-Make sense so far?"
+                        Make sense so far?"
                     </div>
                 </div>
 
                 <div id="professionalScript" style="display: none;">
                     <div class="script-block">
-"So based on your situation, the **Professional Package** at ₹29,999 would be a strong fit. It includes:
+                        "So based on your situation, the **Professional Package** at ₹29,999 would be a strong fit. It
+                        includes:
 
-✓ Everything in Starter
-✓ Social, WhatsApp, Email integrations
-✓ 90+ SEO score guaranteed
-✓ Lead gen forms with automation
-✓ Basic animations & interactions
-✓ 2 revisions
-✓ 15 days support
+                        ✓ Everything in Starter
+                        ✓ Social, WhatsApp, Email integrations
+                        ✓ 90+ SEO score guaranteed
+                        ✓ Lead gen forms with automation
+                        ✓ Basic animations & interactions
+                        ✓ 2 revisions
+                        ✓ 15 days support
 
-This package will solve <span class="variable" id="pain4">[their main pain]</span> and help you achieve <span class="variable" id="goal5">[their goal]</span>.
+                        This package will solve <span class="variable" id="pain4">[their main pain]</span> and help you
+                        achieve <span class="variable" id="goal5">[their goal]</span>.
 
-Does this sound like what you need?"
+                        Does this sound like what you need?"
                     </div>
                 </div>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-secondary" onclick="goToPhase(2)">← Back</button>
                     <button class="btn btn-primary" onclick="goToPhase(4)">Reveal Price →</button>
                 </div>
             </div>
-            
+
             <!-- Phase 4: Price Reveal -->
             <div class="phase-section" id="phase4">
                 <div class="phase-header">
                     <div class="phase-title">Phase 4: Price Reveal</div>
                     <div class="phase-subtitle">Anchor price with silence (30 seconds)</div>
                 </div>
-                
+
                 <div class="warning-box">
-CRITICAL: After stating the price, SHUT UP for at least 10 seconds. Do NOT speak first. The first person to speak loses.
+                    CRITICAL: After stating the price, SHUT UP for at least 10 seconds. Do NOT speak first. The first
+                    person to speak loses.
                 </div>
-                
+
                 <div class="script-block" id="priceScript">
-"The investment for everything I just described is <span class="variable" id="priceAmount">₹59,999</span> one-time.
+                    "The investment for everything I just described is <span class="variable"
+                        id="priceAmount">₹59,999</span> one-time.
 
-That includes hosting, SSL, all integrations, everything. No hidden fees, no monthly charges.
+                    That includes hosting, SSL, all integrations, everything. No hidden fees, no monthly charges.
 
-<strong style="color: var(--error);">[SILENCE - COUNT TO 10]</strong>"
+                    <strong style="color: var(--error);">[SILENCE - COUNT TO 10]</strong>"
                 </div>
-                
+
                 <div class="tip-box">
-Stay silent. Count to 10 in your head. Let them process value vs. price. Their reaction tells you everything.
+                    Stay silent. Count to 10 in your head. Let them process value vs. price. Their reaction tells you
+                    everything.
                 </div>
-                
+
                 <div class="script-block">
-"What are you thinking?"
+                    "What are you thinking?"
                 </div>
-                
+
                 <div class="tip-box">
-They will either: (1) Express interest, (2) Ask questions, or (3) Give an objection. If objection, go to Phase 5.
+                    They will either: (1) Express interest, (2) Ask questions, or (3) Give an objection. If objection,
+                    go to Phase 5.
                 </div>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-secondary" onclick="goToPhase(3)">← Back</button>
                     <button class="btn btn-primary" onclick="goToPhase(5)">Handle Objections →</button>
                     <button class="btn btn-primary" onclick="goToPhase(6)">Close (No Objection) →</button>
                 </div>
             </div>
-            
+
             <!-- Phase 5: Objections -->
             <div class="phase-section" id="phase5">
                 <div class="phase-header">
                     <div class="phase-title">Phase 5: Objections</div>
                     <div class="phase-subtitle">Turn objections into opportunities (5-10 minutes)</div>
                 </div>
-                
+
                 <div class="tip-box">
-Click on the objection you're hearing to see the response script.
+                    Click on the objection you're hearing to see the response script.
                 </div>
-                
+
                 <div class="objection-grid">
                     <div class="objection-card" onclick="showObjection('think')">
                         <div class="objection-title">"I need to think about it"</div>
                         <div class="objection-preview">Pattern interrupt + time close</div>
                     </div>
-                    
+
                     <div class="objection-card" onclick="showObjection('team')">
                         <div class="objection-title">"Discuss with team/spouse"</div>
                         <div class="objection-preview">Spouse close technique</div>
                     </div>
-                    
+
                     <div class="objection-card" onclick="showObjection('discount')">
                         <div class="objection-title">"Can you give discount?"</div>
                         <div class="objection-preview">Hold frame on price</div>
                     </div>
-                    
+
                     <div class="objection-card" onclick="showObjection('budget')">
                         <div class="objection-title">"Budget is tight"</div>
                         <div class="objection-preview">Reframe to value + downsell</div>
                     </div>
-                    
+
                     <div class="objection-card" onclick="showObjection('competitor')">
                         <div class="objection-title">"Competitor quoted less"</div>
                         <div class="objection-preview">Quality vs. cheap</div>
                     </div>
-                    
+
                     <div class="objection-card" onclick="showObjection('timing')">
                         <div class="objection-title">"Not right now / later"</div>
                         <div class="objection-preview">Cost of delay</div>
                     </div>
                 </div>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-secondary" onclick="goToPhase(4)">← Back</button>
                     <button class="btn btn-primary" onclick="goToPhase(6)">Attempt Close →</button>
                 </div>
             </div>
-            
+
             <!-- Phase 6: Close -->
             <div class="phase-section" id="phase6">
                 <div class="phase-header">
                     <div class="phase-title">Phase 6: The Close</div>
                     <div class="phase-subtitle">Assumptive close - get payment (2 minutes)</div>
                 </div>
-                
-                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">ASSUMPTIVE CLOSE (Recommended)</h3>
-                
+
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">ASSUMPTIVE CLOSE (Recommended)
+                </h3>
+
                 <div class="script-block">
-"Alright, based on everything we discussed, I think the <span class="variable" id="packageName">[Package Name]</span> is the perfect fit.
+                    "Alright, based on everything we discussed, I think the <span class="variable"
+                        id="packageName">[Package Name]</span> is the perfect fit.
 
-Here's what happens next:
+                    Here's what happens next:
 
-1. I'll send you the payment link right now
-2. You complete payment
-3. I send you the onboarding questionnaire
-4. You'll have your first design preview in 72 hours
-5. Final site delivered in 14 days
+                    1. I'll send you the payment link right now
+                    2. You complete payment
+                    3. I send you the onboarding questionnaire
+                    4. You'll have your first design preview in 72 hours
+                    5. Final site delivered in 14 days
 
-Which email should I send the payment link to?"
+                    Which email should I send the payment link to?"
                 </div>
-                
+
                 <div class="tip-box">
-Act like they already said yes. Start typing like payment is happening. Assumptive language is powerful.
+                    Act like they already said yes. Start typing like payment is happening. Assumptive language is
+                    powerful.
                 </div>
-                
+
                 <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">ALTERNATIVE: DIRECT CLOSE</h3>
-                
-                <div class="script-block">
-"Look, <span class="variable" id="name5">[Name]</span>, you booked this call for a reason. You told me <span class="variable" id="pain5">[pain]</span> is costing you <span class="variable" id="cost5">[cost]</span>. We have a solution that fixes it in 14 days.
 
-The only question left is: Are you ready to solve this today?"
-                </div>
-                
-                <div class="tip-box">
-Pause after asking. Let THEM answer. If "yes" → send payment link. If hesitation → "What's holding you back?"
-                </div>
-                
-                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">TRIAL CLOSE (If Unsure)</h3>
-                
                 <div class="script-block">
-"So between the Enterprise at ₹59,999 and Professional at ₹29,999, which one feels like the right fit for where you're at?"
+                    "Look, <span class="variable" id="name5">[Name]</span>, you booked this call for a reason. You told
+                    me <span class="variable" id="pain5">[pain]</span> is costing you <span class="variable"
+                        id="cost5">[cost]</span>.
+
+                    You've already tried <span class="variable" id="previous5">[previous attempts]</span> and that
+                    didn't work. This is different because we're not just building a website — we're building a complete
+                    conversion system.
+
+                    We have a solution that fixes it in 14 days.
+
+                    The only question left is: Are you ready to solve this today?"
                 </div>
-                
+
                 <div class="tip-box">
-This forces them to choose BETWEEN two options, not yes/no. Either answer = you're closing.
+                    Pause after asking. Let THEM answer. If "yes" → send payment link. If hesitation → "What's holding
+                    you back?"
                 </div>
-                
+
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">TRIAL CLOSE (If Unsure)</h3>
+
+                <div class="script-block">
+                    "So between the Enterprise at ₹59,999 and Professional at ₹29,999, which one feels like the right
+                    fit for where you're at?"
+                </div>
+
+                <div class="tip-box">
+                    This forces them to choose BETWEEN two options, not yes/no. Either answer = you're closing.
+                </div>
+
                 <div class="action-buttons">
                     <button class="btn btn-secondary" onclick="goToPhase(5)">← Back to Objections</button>
                     <button class="btn btn-primary" onclick="goToPhase(7)">Payment Confirmed →</button>
                 </div>
             </div>
-            
+
             <!-- Phase 7: Post-Close -->
             <div class="phase-section" id="phase7">
                 <div class="phase-header">
                     <div class="phase-title">Phase 7: Post-Close</div>
                     <div class="phase-subtitle">Onboard and set expectations (1 minute)</div>
                 </div>
-                
+
                 <div class="script-block">
-"Awesome! Payment received.
+                    "Awesome! Payment received.
 
-Here's what happens now:
+                    Here's what happens now:
 
-1. I'm sending you the onboarding form — fill that out today if possible
-2. You'll get your project kickoff email within 24 hours
-3. First design preview in 72 hours
-4. We'll stay in close communication throughout
+                    1. I'm sending you the onboarding form — fill that out today if possible
+                    2. You'll get your project kickoff email within 24 hours
+                    3. First design preview in 72 hours
+                    4. We'll stay in close communication throughout
 
-I'm excited to build this for you, <span class="variable" id="name6">[Name]</span>. You made the right decision.
+                    I'm excited to build this for you, <span class="variable" id="name6">[Name]</span>. You made the
+                    right decision.
 
-Any final questions before we wrap?"
+                    Any final questions before we wrap?"
                 </div>
-                
+
                 <div class="tip-box">
-Reinforce their decision. Make them feel good about buying. Set clear next steps.
+                    Reinforce their decision. Make them feel good about buying. Set clear next steps.
                 </div>
-                
+
                 <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">✅ CHECKLIST - AFTER CALL</h3>
-                
+
                 <ul class="checklist">
                     <li>Send payment confirmation email</li>
                     <li>Send onboarding form link</li>
@@ -989,14 +1050,14 @@ Reinforce their decision. Make them feel good about buying. Set clear next steps
                     <li>Log call outcome in CRM</li>
                     <li>Note objections faced for future improvement</li>
                 </ul>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-primary" onclick="resetScript()">🎯 Start New Call</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Objection Modal -->
     <div class="modal" id="objectionModal">
         <div class="modal-content">
@@ -1004,7 +1065,7 @@ Reinforce their decision. Make them feel good about buying. Set clear next steps
             <div id="objectionContent"></div>
         </div>
     </div>
-    
+
     <script>
         // Update all variable placeholders with user input
         function updateVariables() {
@@ -1015,38 +1076,42 @@ Reinforce their decision. Make them feel good about buying. Set clear next steps
             const cost = document.getElementById('costOfInaction').value || '[cost of inaction]';
             const outcome = document.getElementById('desiredOutcome').value || '[desired outcome]';
             const budget = document.getElementById('budgetMentioned').value || '[budget]';
-            
+
             // Update all name variables
             document.querySelectorAll('[id^="name"]').forEach(el => el.textContent = name);
-            
+
             // Update pain points
             document.querySelectorAll('[id^="pain"]').forEach(el => el.textContent = pain);
-            
+
             // Update costs
             document.querySelectorAll('[id^="cost"]').forEach(el => el.textContent = cost);
-            
+
             // Update goals
             document.querySelectorAll('[id^="goal"]').forEach(el => el.textContent = goal);
-            
+
             // Update outcomes
             document.querySelectorAll('[id^="outcome"]').forEach(el => el.textContent = outcome);
+
+            // Update previous attempts
+            const previousAttempts = document.getElementById('previousAttempts').value || '[previous attempts]';
+            document.querySelectorAll('[id^="previous"]').forEach(el => el.textContent = previousAttempts);
         }
-        
+
         // Listen for input changes
         document.querySelectorAll('input, textarea').forEach(input => {
             input.addEventListener('input', updateVariables);
         });
-        
+
         // Phase navigation
         function goToPhase(phaseNum) {
             // Hide all phases
             document.querySelectorAll('.phase-section').forEach(section => {
                 section.classList.remove('active');
             });
-            
+
             // Show selected phase
             document.getElementById('phase' + phaseNum).classList.add('active');
-            
+
             // Update nav buttons
             document.querySelectorAll('.phase-btn').forEach((btn, index) => {
                 btn.classList.remove('active');
@@ -1054,16 +1119,16 @@ Reinforce their decision. Make them feel good about buying. Set clear next steps
                     btn.classList.add('active');
                 }
             });
-            
+
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        
+
         // Copy question to clipboard
         function copyToClipboard(element) {
             const text = element.textContent.trim();
             navigator.clipboard.writeText(text.replace(/^"/, '').replace(/"$/, ''));
-            
+
             // Visual feedback
             const original = element.style.background;
             element.style.background = 'rgba(0, 255, 136, 0.2)';
@@ -1074,20 +1139,20 @@ Reinforce their decision. Make them feel good about buying. Set clear next steps
 
         // Package selection
         let selectedPackage = 'enterprise';
-        
+
         function selectPackage(packageName) {
             selectedPackage = packageName;
-            
+
             // Update UI
             document.querySelectorAll('.package-card').forEach(card => {
                 card.classList.remove('selected');
             });
             event.target.closest('.package-card').classList.add('selected');
-            
+
             // Show relevant script
             document.getElementById('enterpriseScript').style.display = 'none';
             document.getElementById('professionalScript').style.display = 'none';
-            
+
             if (packageName === 'enterprise') {
                 document.getElementById('enterpriseScript').style.display = 'block';
                 document.getElementById('priceAmount').textContent = '₹59,999';
@@ -1101,7 +1166,7 @@ Reinforce their decision. Make them feel good about buying. Set clear next steps
                 document.getElementById('packageName').textContent = 'Starter';
             }
         }
-        
+
         // Show objection response
         function showObjection(type) {
             const modal = document.getElementById('objectionModal');
@@ -1109,17 +1174,32 @@ Reinforce their decision. Make them feel good about buying. Set clear next steps
             const name = document.getElementById('prospectName').value || '[Name]';
             const pain = document.getElementById('painPoint1').value || '[pain]';
             const cost = document.getElementById('costOfInaction').value || '[cost]';
-            
+            const previousAttempts = document.getElementById('previousAttempts').value || '[previous attempts]';
+
             const objections = {
                 think: `
                     <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "I need to think about it"</h2>
                     
                     <div class="script-block">
-"Totally fair. Quick question — what specifically do you need to think about?"
+"I completely understand. This is an important decision.
+
+Can I ask — what specifically do you need to think about? Is it the investment, the timing, or something about the solution itself?"
                     </div>
                     
                     <div class="tip-box">
-They'll reveal the REAL objection. Then handle THAT specific concern.
+Listen carefully. They'll reveal the REAL objection.
+                    </div>
+                    
+                    <div class="script-block">
+"I appreciate that. And I also want to acknowledge — you mentioned you've tried ${previousAttempts}.
+
+I get it. You've been burned before, and you want to make sure this time is different. That's smart.
+
+Here's what I can tell you: The reason those didn't work is because they lacked [conversion structure / automation / premium positioning].
+
+What we do differently is [specific differentiator]. That's why our clients see results.
+
+So let me ask: If I can show you exactly how we're different from what you tried before, would you be ready to move forward today?"
                     </div>
                     
                     <h3 style="color: var(--accent); margin: 25px 0 15px;">ALTERNATIVE: Time-Based Close</h3>
@@ -1142,7 +1222,7 @@ You booked this call for a reason. You told me ${pain} is costing you ${cost}. E
 So let's solve this today. What do you say?"
                     </div>
                 `,
-                
+
                 team: `
                     <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "I need to discuss with team/spouse"</h2>
                     
@@ -1170,7 +1250,7 @@ So let me ask: Are YOU convinced this is the right solution?"
 "Then let's get started. I'll send you the onboarding form and you can loop them in as we go."
                     </div>
                 `,
-                
+
                 discount: `
                     <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "Can you give me a discount?"</h2>
                     
@@ -1202,7 +1282,7 @@ And based on what you told me, you're losing leads every month.
 So the real question isn't 'can I afford this?' — it's 'can I afford NOT to do this?'"
                     </div>
                 `,
-                
+
                 budget: `
                     <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "Budget is tight / Can't afford it"</h2>
                     
@@ -1235,7 +1315,7 @@ Would that work better for your budget?"
 "What if we did 50% today and 50% at delivery? Would that make it easier?"
                     </div>
                 `,
-                
+
                 competitor: `
                     <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "Your competitor quoted me less"</h2>
                     
@@ -1250,13 +1330,15 @@ Listen carefully — they likely quoted a basic package with no automation.
                     <div class="script-block">
 "Here's what I've learned: You can always find someone cheaper. Always.
 
-But cheaper usually means:
+And I heard you already tried ${previousAttempts} — how did that work out?
+
+Cheaper usually means:
 - Longer timelines
-- Lower quality work
+- Lower quality work  
 - No automation setup
 - No premium support
 
-You told me your goal is ${document.getElementById('mainGoal').value || '[goal]'}. Will that cheaper option actually get you there?"
+You told me your goal is ${document.getElementById('mainGoal').value || '[goal]'}. Will that cheaper option actually get you there, or will you end up back here in 3 months having wasted more time and money?"
                     </div>
                     
                     <h3 style="color: var(--accent); margin: 25px 0 15px;">CHALLENGE THEM:</h3>
@@ -1269,12 +1351,16 @@ You're here because you want quality, speed, and results. And that's exactly wha
 So the question isn't 'who's cheapest?' — it's 'who can actually solve my problem?'"
                     </div>
                 `,
-                
+
                 timing: `
                     <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "Not right now / I'll do it later"</h2>
                     
                     <div class="script-block">
-"I understand. Let me ask you this — what's going to change between now and later that will make this easier?"
+"I understand. Let me ask you this — what's going to change between now and later that will make this easier?
+
+[Pause for answer]
+
+Here's what I'm seeing: You already tried ${previousAttempts} and that didn't work. How long ago was that? And between then and now, how much has it cost you to NOT have this fixed?"
                     </div>
                     
                     <div class="script-block">
@@ -1294,22 +1380,22 @@ Let's solve this today."
                     </div>
                 `
             };
-            
+
             content.innerHTML = objections[type];
             modal.classList.add('active');
         }
-        
+
         function closeModal() {
             document.getElementById('objectionModal').classList.remove('active');
         }
-        
+
         // Close modal on outside click
-        document.getElementById('objectionModal').addEventListener('click', function(e) {
+        document.getElementById('objectionModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 closeModal();
             }
         });
-        
+
         // Reset script
         function resetScript() {
             if (confirm('Start a new call? This will clear all current data.')) {
@@ -1320,10 +1406,11 @@ Let's solve this today."
                 goToPhase(1);
             }
         }
-        
+
         // Initialize
         updateVariables();
         selectPackage('enterprise');
     </script>
 </body>
+
 </html>
