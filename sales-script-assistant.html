@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Ticket Sales Script Assistant</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-card: #151b2b;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --text: #e8edf5;
+            --text-dim: #8b95a8;
+            --border: #1f2937;
+            --error: #ff4444;
+            --warning: #ffaa00;
+        }
+        
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid var(--border);
+            height: fit-content;
+            sticky-top: 20px;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .input-group {
+            margin-bottom: 18px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .input-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+        
+        .phase-nav {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .phase-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-dim);
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .phase-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .phase-btn.active {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border-color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .phase-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--text);
+            text-align: center;
+            line-height: 24px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        .phase-btn.active .phase-number {
+            background: var(--bg-dark);
+            color: var(--accent);
+        }
+        
+        /* Main Content */
+        .main-content {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 40px;
+            border: 2px solid var(--border);
+            min-height: 600px;
+        }
+        
+        .phase-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .phase-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .phase-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .phase-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .phase-subtitle {
+            font-size: 14px;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+        
+        .script-block {
+            background: var(--bg-dark);
+            border-left: 4px solid var(--accent);
+            padding: 20px 24px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 15px;
+            line-height: 1.8;
+            position: relative;
+        }
+        
+        .script-block::before {
+            content: '💬 SAY THIS';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--bg-card);
+            padding: 2px 10px;
+            font-size: 10px;
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        
+        .variable {
+            color: var(--accent);
+            font-weight: 700;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .question-list {
+            margin: 25px 0;
+        }
+        
+        .question-item {
+            background: var(--bg-dark);
+            padding: 16px 20px;
+            margin: 12px 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-dim);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .question-item:hover {
+            border-left-width: 5px;
+            transform: translateX(5px);
+            background: #1a1f2e;
+        }
+        
+        .question-item::before {
+            content: '▸';
+            color: var(--accent);
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        .tip-box {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        
+        .tip-box::before {
+            content: '💡 TIP: ';
+            color: var(--warning);
+            font-weight: 700;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .objection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .objection-card {
+            background: var(--bg-dark);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .objection-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.15);
+        }
+        
+        .objection-title {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .objection-preview {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            background: var(--error);
+            color: white;
+        }
+        
+        .checklist {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .checklist li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .warning-box {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        
+        .warning-box::before {
+            content: '⚠️ WARNING: ';
+            color: var(--error);
+            font-weight: 700;
+        }
+
+        .package-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .package-card {
+            background: var(--bg-dark);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .package-card:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .package-card.selected {
+            border-color: var(--accent);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .package-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 10px 0;
+        }
+
+        .package-name {
+            font-size: 14px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">⚡ SALES ASSISTANT</div>
+            
+            <div class="input-group">
+                <label>Prospect Name</label>
+                <input type="text" id="prospectName" placeholder="e.g., Sidharth">
+            </div>
+            
+            <div class="input-group">
+                <label>Business Type</label>
+                <input type="text" id="businessType" placeholder="e.g., Doctor / Clinic">
+            </div>
+            
+            <div class="input-group">
+                <label>Main Goal</label>
+                <input type="text" id="mainGoal" placeholder="e.g., Increase leads">
+            </div>
+            
+            <div class="input-group">
+                <label>Pain Point #1</label>
+                <textarea id="painPoint1" placeholder="What's their biggest challenge?"></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Cost of Inaction</label>
+                <textarea id="costOfInaction" placeholder="What are they losing by not fixing this?"></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Desired Outcome</label>
+                <textarea id="desiredOutcome" placeholder="What do they want to achieve?"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Budget Mentioned</label>
+                <input type="text" id="budgetMentioned" placeholder="e.g., 25K">
+            </div>
+            
+            <div class="phase-nav">
+                <button class="phase-btn active" onclick="goToPhase(1)">
+                    <span class="phase-number">1</span>
+                    <span>Opening</span>
+                </button>
+                <button class="phase-btn" onclick="goToPhase(2)">
+                    <span class="phase-number">2</span>
+                    <span>Discovery</span>
+                </button>
+                <button class="phase-btn" onclick="goToPhase(3)">
+                    <span class="phase-number">3</span>
+                    <span>Value Stack</span>
+                </button>
+                <button class="phase-btn" onclick="goToPhase(4)">
+                    <span class="phase-number">4</span>
+                    <span>Price Reveal</span>
+                </button>
+                <button class="phase-btn" onclick="goToPhase(5)">
+                    <span class="phase-number">5</span>
+                    <span>Objections</span>
+                </button>
+                <button class="phase-btn" onclick="goToPhase(6)">
+                    <span class="phase-number">6</span>
+                    <span>Close</span>
+                </button>
+                <button class="phase-btn" onclick="goToPhase(7)">
+                    <span class="phase-number">7</span>
+                    <span>Post-Close</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Phase 1: Opening -->
+            <div class="phase-section active" id="phase1">
+                <div class="phase-header">
+                    <div class="phase-title">Phase 1: Opening</div>
+                    <div class="phase-subtitle">Take control and set the frame (2 minutes)</div>
+                </div>
+                
+                <div class="script-block">
+"Hey <span class="variable" id="name1">[Name]</span>, great to connect! How's your day going?"
+                </div>
+                
+                <div class="tip-box">
+Wait for their response. Be warm but brief. Mirror their energy level.
+                </div>
+                
+                <div class="script-block">
+"Perfect. Before we dive in, let me set some quick expectations. I've got about 20-25 minutes blocked for us.
+
+The goal isn't to give you a sales pitch — the goal is to figure out if we're even a good fit to work together.
+
+I'm going to ask you some direct questions about your business, what's working, what's not, and where you want to go.
+
+By the end, we'll both know clearly whether this makes sense or not. Sound good?"
+                </div>
+                
+                <div class="tip-box">
+Wait for agreement. This establishes YOU control the process, not them. If they say "yes", you've set the frame.
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="goToPhase(2)">Start Discovery →</button>
+                </div>
+            </div>
+            
+            <!-- Phase 2: Discovery -->
+            <div class="phase-section" id="phase2">
+                <div class="phase-header">
+                    <div class="phase-title">Phase 2: Discovery</div>
+                    <div class="phase-subtitle">Go deep - find REAL pain and urgency (8-12 minutes)</div>
+                </div>
+                
+                <div class="warning-box">
+Your goal: Ask 8-12 questions. Go 3-4 layers deep. Use SPIN: Situation → Problem → Implication → Need-Payoff
+                </div>
+                
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">SITUATION QUESTIONS (Current State)</h3>
+                
+                <div class="question-list">
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"<span class="variable" id="name2">[Name]</span>, what triggered you to book this call right now? What's changed?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"Walk me through your current situation with your website. What does it do well? What frustrates you?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"Where do most of your clients come from today?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"What's your current process for getting appointments booked?"
+                    </div>
+                </div>
+                
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">PROBLEM QUESTIONS (Uncover Pain)</h3>
+                
+                <div class="question-list">
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"What's the #1 thing holding you back from growing faster right now?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"If I'm being honest — and you can be honest with me — how many leads or appointments do you think you're losing each month because of your website?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"What's the real cost of that? Not just money — I mean time, stress, reputation, momentum?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"Have you tried to fix this before? What happened?"
+                    </div>
+                </div>
+                
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">IMPLICATION QUESTIONS (Amplify Pain)</h3>
+                
+                <div class="question-list">
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"So if nothing changes in the next 30 days, what does that mean for your business? Your revenue? Your growth?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"And if this continues for 3 months, 6 months... what's the real damage there?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"How is this affecting you personally? Are you losing sleep over it?"
+                    </div>
+                </div>
+                
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">NEED-PAYOFF QUESTIONS (Get Them to Sell Themselves)</h3>
+                
+                <div class="question-list">
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"If you had a website that automatically converted visitors into booked appointments — without you touching it — what would that be worth to your business?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"What would change for you if this was solved 2 weeks from today?"
+                    </div>
+                    
+                    <div class="question-item" onclick="copyToClipboard(this)">
+"On a scale of 1-10, how important is fixing this right now?"
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+After each answer, stay silent for 2-3 seconds. Let them elaborate. The deeper they go, the easier the close.
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="goToPhase(1)">← Back</button>
+                    <button class="btn btn-primary" onclick="goToPhase(3)">Present Solution →</button>
+                </div>
+            </div>
+            
+            <!-- Phase 3: Value Stack -->
+            <div class="phase-section" id="phase3">
+                <div class="phase-header">
+                    <div class="phase-title">Phase 3: Value Stack</div>
+                    <div class="phase-subtitle">Position as trusted advisor (4-6 minutes)</div>
+                </div>
+                
+                <div class="script-block">
+"Okay, so based on everything you just told me, let me share what I recommend."
+                </div>
+                
+                <div class="script-block">
+"Here's what I'm seeing:
+
+1. <span class="variable" id="pain3">[Their main pain point]</span>
+2. <span class="variable" id="cost3">[The cost of inaction]</span>
+3. <span class="variable" id="goal3">[Their desired outcome]</span>
+
+The gap between where you are and where you want to be comes down to three things your website is missing:
+
+❌ Number 1: Conversion structure — Your site isn't built to guide visitors to book
+❌ Number 2: Automation systems — No WhatsApp, email, CRM integration to capture leads
+❌ Number 3: Premium positioning — If you're a premium service, your site needs to look premium
+
+Does that sound accurate?"
+                </div>
+                
+                <div class="tip-box">
+Get agreement before moving forward. If they say "yes," you've diagnosed correctly.
+                </div>
+
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">SELECT PACKAGE TO RECOMMEND</h3>
+
+                <div class="package-selector">
+                    <div class="package-card" onclick="selectPackage('enterprise')">
+                        <div class="package-name">Enterprise</div>
+                        <div class="package-price">₹59,999</div>
+                    </div>
+                    <div class="package-card" onclick="selectPackage('professional')">
+                        <div class="package-name">Professional</div>
+                        <div class="package-price">₹29,999</div>
+                    </div>
+                    <div class="package-card" onclick="selectPackage('starter')">
+                        <div class="package-name">Starter</div>
+                        <div class="package-price">₹14,999</div>
+                    </div>
+                </div>
+                
+                <div id="enterpriseScript" style="display: none;">
+                    <div class="script-block">
+"So here's what I'd recommend for someone in your position who wants <span class="variable" id="goal4">[their goal]</span>...
+
+The **Enterprise Package** is the best fit because it gives you:
+
+✓ A conversion-optimized website that looks world-class
+✓ Full automation — WhatsApp, email, appointment booking, Google Sheets
+✓ 97+ SEO score guaranteed
+✓ LLM optimization so you show up in AI search
+✓ Google Analytics & Google My Business setup
+✓ 4 rounds of revisions so we nail it
+✓ 30 days premium support after launch
+
+And the kicker? We deliver this in 14 days.
+
+Most people we work with see <span class="variable" id="result4">[specific result]</span> within the first 30-60 days.
+
+The reason I'm recommending this package over the others is because <span class="variable" id="reason4">[tie it to their pain/goal]</span>.
+
+Make sense so far?"
+                    </div>
+                </div>
+
+                <div id="professionalScript" style="display: none;">
+                    <div class="script-block">
+"So based on your situation, the **Professional Package** at ₹29,999 would be a strong fit. It includes:
+
+✓ Everything in Starter
+✓ Social, WhatsApp, Email integrations
+✓ 90+ SEO score guaranteed
+✓ Lead gen forms with automation
+✓ Basic animations & interactions
+✓ 2 revisions
+✓ 15 days support
+
+This package will solve <span class="variable" id="pain4">[their main pain]</span> and help you achieve <span class="variable" id="goal5">[their goal]</span>.
+
+Does this sound like what you need?"
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="goToPhase(2)">← Back</button>
+                    <button class="btn btn-primary" onclick="goToPhase(4)">Reveal Price →</button>
+                </div>
+            </div>
+            
+            <!-- Phase 4: Price Reveal -->
+            <div class="phase-section" id="phase4">
+                <div class="phase-header">
+                    <div class="phase-title">Phase 4: Price Reveal</div>
+                    <div class="phase-subtitle">Anchor price with silence (30 seconds)</div>
+                </div>
+                
+                <div class="warning-box">
+CRITICAL: After stating the price, SHUT UP for at least 10 seconds. Do NOT speak first. The first person to speak loses.
+                </div>
+                
+                <div class="script-block" id="priceScript">
+"The investment for everything I just described is <span class="variable" id="priceAmount">₹59,999</span> one-time.
+
+That includes hosting, SSL, all integrations, everything. No hidden fees, no monthly charges.
+
+<strong style="color: var(--error);">[SILENCE - COUNT TO 10]</strong>"
+                </div>
+                
+                <div class="tip-box">
+Stay silent. Count to 10 in your head. Let them process value vs. price. Their reaction tells you everything.
+                </div>
+                
+                <div class="script-block">
+"What are you thinking?"
+                </div>
+                
+                <div class="tip-box">
+They will either: (1) Express interest, (2) Ask questions, or (3) Give an objection. If objection, go to Phase 5.
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="goToPhase(3)">← Back</button>
+                    <button class="btn btn-primary" onclick="goToPhase(5)">Handle Objections →</button>
+                    <button class="btn btn-primary" onclick="goToPhase(6)">Close (No Objection) →</button>
+                </div>
+            </div>
+            
+            <!-- Phase 5: Objections -->
+            <div class="phase-section" id="phase5">
+                <div class="phase-header">
+                    <div class="phase-title">Phase 5: Objections</div>
+                    <div class="phase-subtitle">Turn objections into opportunities (5-10 minutes)</div>
+                </div>
+                
+                <div class="tip-box">
+Click on the objection you're hearing to see the response script.
+                </div>
+                
+                <div class="objection-grid">
+                    <div class="objection-card" onclick="showObjection('think')">
+                        <div class="objection-title">"I need to think about it"</div>
+                        <div class="objection-preview">Pattern interrupt + time close</div>
+                    </div>
+                    
+                    <div class="objection-card" onclick="showObjection('team')">
+                        <div class="objection-title">"Discuss with team/spouse"</div>
+                        <div class="objection-preview">Spouse close technique</div>
+                    </div>
+                    
+                    <div class="objection-card" onclick="showObjection('discount')">
+                        <div class="objection-title">"Can you give discount?"</div>
+                        <div class="objection-preview">Hold frame on price</div>
+                    </div>
+                    
+                    <div class="objection-card" onclick="showObjection('budget')">
+                        <div class="objection-title">"Budget is tight"</div>
+                        <div class="objection-preview">Reframe to value + downsell</div>
+                    </div>
+                    
+                    <div class="objection-card" onclick="showObjection('competitor')">
+                        <div class="objection-title">"Competitor quoted less"</div>
+                        <div class="objection-preview">Quality vs. cheap</div>
+                    </div>
+                    
+                    <div class="objection-card" onclick="showObjection('timing')">
+                        <div class="objection-title">"Not right now / later"</div>
+                        <div class="objection-preview">Cost of delay</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="goToPhase(4)">← Back</button>
+                    <button class="btn btn-primary" onclick="goToPhase(6)">Attempt Close →</button>
+                </div>
+            </div>
+            
+            <!-- Phase 6: Close -->
+            <div class="phase-section" id="phase6">
+                <div class="phase-header">
+                    <div class="phase-title">Phase 6: The Close</div>
+                    <div class="phase-subtitle">Assumptive close - get payment (2 minutes)</div>
+                </div>
+                
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">ASSUMPTIVE CLOSE (Recommended)</h3>
+                
+                <div class="script-block">
+"Alright, based on everything we discussed, I think the <span class="variable" id="packageName">[Package Name]</span> is the perfect fit.
+
+Here's what happens next:
+
+1. I'll send you the payment link right now
+2. You complete payment
+3. I send you the onboarding questionnaire
+4. You'll have your first design preview in 72 hours
+5. Final site delivered in 14 days
+
+Which email should I send the payment link to?"
+                </div>
+                
+                <div class="tip-box">
+Act like they already said yes. Start typing like payment is happening. Assumptive language is powerful.
+                </div>
+                
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">ALTERNATIVE: DIRECT CLOSE</h3>
+                
+                <div class="script-block">
+"Look, <span class="variable" id="name5">[Name]</span>, you booked this call for a reason. You told me <span class="variable" id="pain5">[pain]</span> is costing you <span class="variable" id="cost5">[cost]</span>. We have a solution that fixes it in 14 days.
+
+The only question left is: Are you ready to solve this today?"
+                </div>
+                
+                <div class="tip-box">
+Pause after asking. Let THEM answer. If "yes" → send payment link. If hesitation → "What's holding you back?"
+                </div>
+                
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">TRIAL CLOSE (If Unsure)</h3>
+                
+                <div class="script-block">
+"So between the Enterprise at ₹59,999 and Professional at ₹29,999, which one feels like the right fit for where you're at?"
+                </div>
+                
+                <div class="tip-box">
+This forces them to choose BETWEEN two options, not yes/no. Either answer = you're closing.
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="goToPhase(5)">← Back to Objections</button>
+                    <button class="btn btn-primary" onclick="goToPhase(7)">Payment Confirmed →</button>
+                </div>
+            </div>
+            
+            <!-- Phase 7: Post-Close -->
+            <div class="phase-section" id="phase7">
+                <div class="phase-header">
+                    <div class="phase-title">Phase 7: Post-Close</div>
+                    <div class="phase-subtitle">Onboard and set expectations (1 minute)</div>
+                </div>
+                
+                <div class="script-block">
+"Awesome! Payment received.
+
+Here's what happens now:
+
+1. I'm sending you the onboarding form — fill that out today if possible
+2. You'll get your project kickoff email within 24 hours
+3. First design preview in 72 hours
+4. We'll stay in close communication throughout
+
+I'm excited to build this for you, <span class="variable" id="name6">[Name]</span>. You made the right decision.
+
+Any final questions before we wrap?"
+                </div>
+                
+                <div class="tip-box">
+Reinforce their decision. Make them feel good about buying. Set clear next steps.
+                </div>
+                
+                <h3 style="color: var(--accent); margin: 30px 0 15px 0; font-size: 18px;">✅ CHECKLIST - AFTER CALL</h3>
+                
+                <ul class="checklist">
+                    <li>Send payment confirmation email</li>
+                    <li>Send onboarding form link</li>
+                    <li>Add to project management system</li>
+                    <li>Schedule kickoff call (if needed)</li>
+                    <li>Log call outcome in CRM</li>
+                    <li>Note objections faced for future improvement</li>
+                </ul>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="resetScript()">🎯 Start New Call</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Objection Modal -->
+    <div class="modal" id="objectionModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="objectionContent"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Update all variable placeholders with user input
+        function updateVariables() {
+            const name = document.getElementById('prospectName').value || '[Name]';
+            const businessType = document.getElementById('businessType').value || '[Business Type]';
+            const goal = document.getElementById('mainGoal').value || '[their goal]';
+            const pain = document.getElementById('painPoint1').value || '[their pain point]';
+            const cost = document.getElementById('costOfInaction').value || '[cost of inaction]';
+            const outcome = document.getElementById('desiredOutcome').value || '[desired outcome]';
+            const budget = document.getElementById('budgetMentioned').value || '[budget]';
+            
+            // Update all name variables
+            document.querySelectorAll('[id^="name"]').forEach(el => el.textContent = name);
+            
+            // Update pain points
+            document.querySelectorAll('[id^="pain"]').forEach(el => el.textContent = pain);
+            
+            // Update costs
+            document.querySelectorAll('[id^="cost"]').forEach(el => el.textContent = cost);
+            
+            // Update goals
+            document.querySelectorAll('[id^="goal"]').forEach(el => el.textContent = goal);
+            
+            // Update outcomes
+            document.querySelectorAll('[id^="outcome"]').forEach(el => el.textContent = outcome);
+        }
+        
+        // Listen for input changes
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', updateVariables);
+        });
+        
+        // Phase navigation
+        function goToPhase(phaseNum) {
+            // Hide all phases
+            document.querySelectorAll('.phase-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected phase
+            document.getElementById('phase' + phaseNum).classList.add('active');
+            
+            // Update nav buttons
+            document.querySelectorAll('.phase-btn').forEach((btn, index) => {
+                btn.classList.remove('active');
+                if (index === phaseNum - 1) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Copy question to clipboard
+        function copyToClipboard(element) {
+            const text = element.textContent.trim();
+            navigator.clipboard.writeText(text.replace(/^"/, '').replace(/"$/, ''));
+            
+            // Visual feedback
+            const original = element.style.background;
+            element.style.background = 'rgba(0, 255, 136, 0.2)';
+            setTimeout(() => {
+                element.style.background = original;
+            }, 300);
+        }
+
+        // Package selection
+        let selectedPackage = 'enterprise';
+        
+        function selectPackage(packageName) {
+            selectedPackage = packageName;
+            
+            // Update UI
+            document.querySelectorAll('.package-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.package-card').classList.add('selected');
+            
+            // Show relevant script
+            document.getElementById('enterpriseScript').style.display = 'none';
+            document.getElementById('professionalScript').style.display = 'none';
+            
+            if (packageName === 'enterprise') {
+                document.getElementById('enterpriseScript').style.display = 'block';
+                document.getElementById('priceAmount').textContent = '₹59,999';
+                document.getElementById('packageName').textContent = 'Enterprise';
+            } else if (packageName === 'professional') {
+                document.getElementById('professionalScript').style.display = 'block';
+                document.getElementById('priceAmount').textContent = '₹29,999';
+                document.getElementById('packageName').textContent = 'Professional';
+            } else {
+                document.getElementById('priceAmount').textContent = '₹14,999';
+                document.getElementById('packageName').textContent = 'Starter';
+            }
+        }
+        
+        // Show objection response
+        function showObjection(type) {
+            const modal = document.getElementById('objectionModal');
+            const content = document.getElementById('objectionContent');
+            const name = document.getElementById('prospectName').value || '[Name]';
+            const pain = document.getElementById('painPoint1').value || '[pain]';
+            const cost = document.getElementById('costOfInaction').value || '[cost]';
+            
+            const objections = {
+                think: `
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "I need to think about it"</h2>
+                    
+                    <div class="script-block">
+"Totally fair. Quick question — what specifically do you need to think about?"
+                    </div>
+                    
+                    <div class="tip-box">
+They'll reveal the REAL objection. Then handle THAT specific concern.
+                    </div>
+                    
+                    <h3 style="color: var(--accent); margin: 25px 0 15px;">ALTERNATIVE: Time-Based Close</h3>
+                    
+                    <div class="script-block">
+"I get it. How much time do you need? Is 2-3 days enough or do you need 2-3 weeks?"
+                    </div>
+                    
+                    <div class="script-block">
+"Perfect. Let me ask you honestly — is there anything between now and Wednesday that's going to change your situation or our solution?
+
+[No]
+
+So really, what you're saying is you want time to avoid making a decision rather than time to gather new information.
+
+Here's what I've learned: the people who say 'let me think' almost never come back. Not because the solution wasn't right, but because they let the momentum die.
+
+You booked this call for a reason. You told me ${pain} is costing you ${cost}. Every day you wait, that cost compounds.
+
+So let's solve this today. What do you say?"
+                    </div>
+                `,
+                
+                team: `
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "I need to discuss with team/spouse"</h2>
+                    
+                    <div class="script-block">
+"I completely understand. Can I ask you something?
+
+Are you the one who makes decisions like this for the business, or does your [spouse/partner/team] have to be involved?"
+                    </div>
+                    
+                    <div class="tip-box">
+If they say THEY make decisions, it's a stall. Use this response:
+                    </div>
+                    
+                    <div class="script-block">
+"Here's the thing — your [person] will support any decision that increases revenue and solves a real problem.
+
+This project directly helps you ${document.getElementById('mainGoal').value || '[achieve goal]'}. If you're confident this is the right move, they'll support it.
+
+So let me ask: Are YOU convinced this is the right solution?"
+                    </div>
+                    
+                    <div class="script-block">
+[If Yes]
+
+"Then let's get started. I'll send you the onboarding form and you can loop them in as we go."
+                    </div>
+                `,
+                
+                discount: `
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "Can you give me a discount?"</h2>
+                    
+                    <div class="script-block">
+"I appreciate you asking, but here's the reality — the price is the price because the value and work are the same.
+
+I can't reduce the quality or scope just to lower the cost. That wouldn't serve you.
+
+What I CAN do is this: If you confirm today, I'll include [free Google My Business optimization / priority delivery / extra revision round] worth ₹8,000.
+
+Fair enough?"
+                    </div>
+                    
+                    <h3 style="color: var(--accent); margin: 25px 0 15px;">ALTERNATIVE: Reframe to Value</h3>
+                    
+                    <div class="script-block">
+"Let me ask you this — is the concern really the price, or do you not see the value yet?
+
+[If value:]
+
+"What part specifically doesn't feel valuable to you?"
+
+[If price:]
+
+"I get it. But here's what I know: with just ONE new client from your improved website, this entire investment pays for itself.
+
+And based on what you told me, you're losing leads every month.
+
+So the real question isn't 'can I afford this?' — it's 'can I afford NOT to do this?'"
+                    </div>
+                `,
+                
+                budget: `
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "Budget is tight / Can't afford it"</h2>
+                    
+                    <div class="script-block">
+"I totally understand. Let me ask you something though — if budget wasn't an issue, would this be the right solution for you?"
+                    </div>
+                    
+                    <div class="script-block">
+[If Yes:]
+
+"Okay, so it's not the solution — it's the timing.
+
+Here's what I suggest: Let's look at the Professional Package at ₹29,999. It still gives you:
+
+✓ Social + WhatsApp + Email integration
+✓ 90+ SEO score
+✓ Lead forms with automation
+✓ Performance optimizations
+✓ 2 revisions
+✓ 15 days support
+
+It's not as comprehensive, but it'll still solve ${pain}.
+
+Would that work better for your budget?"
+                    </div>
+                    
+                    <h3 style="color: var(--accent); margin: 25px 0 15px;">ALTERNATIVE: Payment Plan</h3>
+                    
+                    <div class="script-block">
+"What if we did 50% today and 50% at delivery? Would that make it easier?"
+                    </div>
+                `,
+                
+                competitor: `
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "Your competitor quoted me less"</h2>
+                    
+                    <div class="script-block">
+"That's interesting. Can I ask — what exactly did they quote you for?"
+                    </div>
+                    
+                    <div class="tip-box">
+Listen carefully — they likely quoted a basic package with no automation.
+                    </div>
+                    
+                    <div class="script-block">
+"Here's what I've learned: You can always find someone cheaper. Always.
+
+But cheaper usually means:
+- Longer timelines
+- Lower quality work
+- No automation setup
+- No premium support
+
+You told me your goal is ${document.getElementById('mainGoal').value || '[goal]'}. Will that cheaper option actually get you there?"
+                    </div>
+                    
+                    <h3 style="color: var(--accent); margin: 25px 0 15px;">CHALLENGE THEM:</h3>
+                    
+                    <div class="script-block">
+"Let me be direct: If you wanted the cheapest option, you wouldn't be on this call with me.
+
+You're here because you want quality, speed, and results. And that's exactly what we deliver.
+
+So the question isn't 'who's cheapest?' — it's 'who can actually solve my problem?'"
+                    </div>
+                `,
+                
+                timing: `
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">OBJECTION: "Not right now / I'll do it later"</h2>
+                    
+                    <div class="script-block">
+"I understand. Let me ask you this — what's going to change between now and later that will make this easier?"
+                    </div>
+                    
+                    <div class="script-block">
+"Here's the reality: Every day you wait, you're losing ${cost}.
+
+If you wait 30 days, that's [calculate 30 days of loss].
+
+So waiting doesn't save you money — it costs you money.
+
+The question isn't 'when should I do this?' It's 'how much am I willing to lose before I take action?'"
+                    </div>
+                    
+                    <div class="script-block">
+"You already know this needs to be fixed. The only thing stopping you is taking the decision.
+
+Let's solve this today."
+                    </div>
+                `
+            };
+            
+            content.innerHTML = objections[type];
+            modal.classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('objectionModal').classList.remove('active');
+        }
+        
+        // Close modal on outside click
+        document.getElementById('objectionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Reset script
+        function resetScript() {
+            if (confirm('Start a new call? This will clear all current data.')) {
+                document.querySelectorAll('input, textarea').forEach(input => {
+                    input.value = '';
+                });
+                updateVariables();
+                goToPhase(1);
+            }
+        }
+        
+        // Initialize
+        updateVariables();
+        selectPackage('enterprise');
+    </script>
+</body>
+</html>
